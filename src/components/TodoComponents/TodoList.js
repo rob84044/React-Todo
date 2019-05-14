@@ -1,11 +1,22 @@
 // your components will all go in this `component` directory.
 // feel free to change this component.js into TodoList.js
 import React from 'react';
-import Student from './Student';
-import StudentForm from './StudentForm';
+import TodoForm from './TodoForm';
+import Todo from './Todo';
+
+const todoArray = [
+  {
+    task: 'Type in the input box below',
+    id: Date.now(),
+    completed: false
+  }
+];
 
 const defaultState = {
   //This will represent the defaultState for the ToDoList's state
+  task: '',
+  id: undefined,
+  completed: false
 };
 
 class TodoList extends React.Component {
@@ -33,7 +44,7 @@ class TodoList extends React.Component {
       <div>
         <h1>Todo List</h1>
         <div className="pre-existing">
-          {this.state.TodoList.map(todo => (
+          {this.state.todoArray.map(todo => (
             <Todo todo={todo} />
           ))}
         </div>
