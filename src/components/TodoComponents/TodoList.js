@@ -31,9 +31,7 @@ const todos = [
 const defaultState = {
   //This will represent the defaultState for the ToDoList's state
   newTodos: todos,
-  task: '',
-  id: '',
-  completed: ''
+  task: ''
 };
 
 class TodoList extends React.Component {
@@ -52,10 +50,8 @@ class TodoList extends React.Component {
       completed: false
     };
     this.setState({
-      todos: [...this.state.todos, newTodo],
-      task: '',
-      id: undefined,
-      completed: false
+      newTodos: [...this.state.newTodos, newTodo],
+      task: ''
     });
   };
 
@@ -64,29 +60,47 @@ class TodoList extends React.Component {
     console.log(event.target.value);
     this.setState({
       //This will be what updates the existing todoList items
-      [event.target.name]: event.target.value
+      task: event.target.value
     });
   };
 
   lineThroughHandler = event => {
     //This will be the event handler used when you click on an already existing event listener
-    this.setState({
-      //This will be what marks an existing item as a line through item
-    });
+    const todoID = event.target.dataset.todo;
+    console.log(event.target);
+
+    const index = this.state.newTodos.findIndex(todo => todo.id === todoID),
+      todos = [...this.state.newTodos];
+    // important to create a copy, otherwise you'll modify state outside of setState call
+    todos[index] = { ...todos[index], completed: !todos[index].completed };
+    this.setState({ newTodos: todos });
+
+    // this.setState({
+    //   newTodos: this.state.newTodos.map(todo =>
+    //     todo.id === todoID
+    //       ? Object.assign({}, todo, { completed: !todo.completed })
+    //       : todo
+    //   )
+    // });
+    event.preventDefault();
   };
+
   render() {
     return (
       <div>
         <h1>Todo List</h1>
         <div className="pre-existing">
           {this.state.newTodos.map(todo => (
-            <Todo todo={todo} />
+            <Todo
+              todo={todo}
+              key={todo.task}
+              lineThroughHandler={this.lineThroughHandler}
+            />
           ))}
         </div>
         <TodoForm
-          addHandler={this.addHandler}
-          removeHandler={this.removeHandler}
-          lineThroughHandler={this.lineThroughHandler}
+          todoHandler={this.todoHandler}
+          changeHandler={this.changeHandler}
           task={this.state.task}
         />
       </div>

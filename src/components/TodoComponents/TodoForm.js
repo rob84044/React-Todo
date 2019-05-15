@@ -7,9 +7,11 @@ function TodoForm(props) {
         type="text"
         value={props.task}
         placeholder="Enter Todo Item Here"
-        name="todo Item"
+        name="task"
         onChange={props.changeHandler}
       />
+      <button onClick={props.todoHandler}>Add Task</button>
+      <button onClick={props.removeHandler}>Remove Task</button>
     </form>
   );
 }
