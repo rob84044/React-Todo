@@ -3,27 +3,28 @@
 import React from 'react';
 import TodoForm from './TodoForm';
 import Todo from './Todo';
+import Test from './Test';
 
 const todos = [
   {
     task: 'Type in the input box below',
-    id: Date.now(),
+    id: Date.now() + 1,
     completed: false
   },
   {
     task: 'Click on "Add Todo" to add to your Todo List',
-    id: Date.now(),
+    id: Date.now() + 2,
     completed: false
   },
   {
     task:
       'Click on an existing todo item, then select "Remove Todo" to delete that todo item',
-    id: Date.now(),
+    id: Date.now() + 3,
     completed: false
   },
   {
     task: 'Refresh the page to start over!',
-    id: Date.now(),
+    id: Date.now() + 4,
     completed: false
   }
 ];
@@ -40,7 +41,10 @@ class TodoList extends React.Component {
     this.state = defaultState;
   }
   removeHandler = event => {
-    //This will be the event handler used when you remove a task
+    event.preventDefault();
+
+    let newTodos = this.state.newTodos.filter(todo => !todo.completed);
+    this.setState({ newTodos });
   };
   addNewTodo = event => {
     event.preventDefault();
@@ -65,8 +69,8 @@ class TodoList extends React.Component {
   };
 
   lineThroughHandler = id => {
-    let tempTodoArray = this.state.todos.slice();
-    tempTodoArray = tempTodoArray.map(todo => {
+    let newTodos = this.state.newTodos.slice();
+    newTodos = newTodos.map(todo => {
       if (todo.id === id) {
         todo.completed = !todo.completed;
         return todo;
@@ -74,7 +78,7 @@ class TodoList extends React.Component {
         return todo;
       }
     });
-    this.setState({ tempTodoArray });
+    this.setState({ newTodos });
   };
 
   render() {
@@ -82,18 +86,16 @@ class TodoList extends React.Component {
       <div>
         <h1>Todo List</h1>
         <div className="pre-existing">
-          {this.state.newTodos.map(todo => (
-            <Todo
-              todo={todo}
-              key={todo.task}
-              lineThroughHandler={this.lineThroughHandler}
-            />
-          ))}
+          <Test
+            newTodos={this.state.newTodos}
+            lineThroughHandler={this.lineThroughHandler}
+          />
         </div>
         <TodoForm
-          todoHandler={this.todoHandler}
+          addNewTodo={this.addNewTodo}
           changeHandler={this.changeHandler}
           task={this.state.task}
+          removeHandler={this.removeHandler}
         />
       </div>
     );
