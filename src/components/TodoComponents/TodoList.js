@@ -42,7 +42,7 @@ class TodoList extends React.Component {
   removeHandler = event => {
     //This will be the event handler used when you remove a task
   };
-  todoHandler = event => {
+  addNewTodo = event => {
     event.preventDefault();
     let newTodo = {
       task: this.state.task,
@@ -64,25 +64,17 @@ class TodoList extends React.Component {
     });
   };
 
-  lineThroughHandler = event => {
-    //This will be the event handler used when you click on an already existing event listener
-    const todoID = event.target.dataset.todo;
-    console.log(event.target);
-
-    const index = this.state.newTodos.findIndex(todo => todo.id === todoID),
-      todos = [...this.state.newTodos];
-    // important to create a copy, otherwise you'll modify state outside of setState call
-    todos[index] = { ...todos[index], completed: !todos[index].completed };
-    this.setState({ newTodos: todos });
-
-    // this.setState({
-    //   newTodos: this.state.newTodos.map(todo =>
-    //     todo.id === todoID
-    //       ? Object.assign({}, todo, { completed: !todo.completed })
-    //       : todo
-    //   )
-    // });
-    event.preventDefault();
+  lineThroughHandler = id => {
+    let tempTodoArray = this.state.todos.slice();
+    tempTodoArray = tempTodoArray.map(todo => {
+      if (todo.id === id) {
+        todo.completed = !todo.completed;
+        return todo;
+      } else {
+        return todo;
+      }
+    });
+    this.setState({ tempTodoArray });
   };
 
   render() {

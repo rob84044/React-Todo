@@ -1,23 +1,19 @@
 import React from 'react';
-import classNames from 'classnames';
 
-function Todo(props) {
-  const todoItemClasses = classNames({
-    todoItem: true,
-    strike: props.todo.completed
-  });
-
+const Todo = props => {
   return (
-    <div className="todoItemDiv">
-      <p
-        onClick={props.lineThroughHandler}
-        className={todoItemClasses}
-        data-todo={props.todo.id}
-      >
-        {props.todo.task}
-      </p>
+    <div
+      style={
+        props.todo.completed
+          ? { textDecoration: 'line-through', backgroundColor: 'red' }
+          : null
+      }
+      className="todoItemDiv"
+      onClick={() => props.lineThroughHandler(props.todo.id)}
+    >
+      {props.todo.task}
     </div>
   );
-}
+};
 
 export default Todo;
